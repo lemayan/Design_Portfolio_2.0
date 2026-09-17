@@ -1,0 +1,9 @@
+import Link from 'next/link';
+import {notFound} from 'next/navigation';
+import {ArrowLeft,ArrowRight} from 'lucide-react';
+import {articles,dateLabel,readTime} from '@/lib/data';
+import {EditorialArt} from '@/components/project-art';
+import ArticleTools from '@/components/article-tools';
+export function generateStaticParams(){return articles.map(a=>({slug:a.slug}));}
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const a=articles.find(a=>a.slug===slug);return {title:a?.title||'Article',description:a?.intro};}
+export default async function Article({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const i=articles.findIndex(a=>a.slug===slug);if(i<0)notFound();const a=articles[i],next=articles[(i+1)%articles.length];return <main id="main" className="page-wrap reading-page"><Link className="underlined" href="/blog"><ArrowLeft size={16}/> All articles</Link><div className="reading-layout"><article><span className="eyebrow">{a.category.toUpperCase()}</span><h1>{a.title}</h1><div className="article-byline"><span className="avatar">LL</span><span>Lemayan Leleina</span><span>·</span><time dateTime={a.date}>{dateLabel(a.date)}</time><span>· {readTime(a)} min read</span></div><EditorialArt color={a.color}/><p className="article-intro">{a.intro}</p>{a.sections.map((s,j)=><section id={'section-'+j} key={j}>{s.heading&&<h2>{s.heading}</h2>}<p>{s.body}</p></section>)}<div className="next-article"><span className="micro muted">NEXT NOTE</span><Link href={'/blog/'+next.slug}>{next.title}<ArrowRight size={20}/></Link></div></article><aside><span className="micro">IN THIS NOTE</span>{a.sections.map((s,j)=>s.heading&&<a key={j} href={'#section-'+j}>{s.heading}</a>)}<ArticleTools/><Link href="/blog"><ArrowLeft size={15}/> Back to blog</Link></aside></div></main>;}

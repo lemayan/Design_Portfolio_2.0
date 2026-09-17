@@ -1,0 +1,32 @@
+.handset-experience{min-width:0;width:100%;display:flex;align-items:center;flex-direction:column;gap:12px}
+.handset-viewer{position:relative;width:100%;height:750px;isolation:isolate;max-width:510px}
+.handset-canvas{position:absolute;inset:0;opacity:0;transition:opacity .15s}.handset-canvas.ready{opacity:1}
+.handset-shadow{position:absolute;inset:8% 0;background:radial-gradient(ellipse,#d3d9c9aa,transparent 68%);pointer-events:none}
+.handset-shadow:after{content:'';position:absolute;bottom:-5%;left:25%;width:50%;height:25px;border-radius:50%;background:#37433322;filter:blur(13px)}
+.handset-fallback{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:var(--handset-width);height:var(--handset-height);border-radius:24px;background:#181d1c;border:3px solid #b4b8b4;box-shadow:2px 2px 0 #f9faf5,4px 5px 0 #8d938e}
+.handset-front{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(var(--handset-width)*.94444);height:calc(var(--handset-height)*.9699);border-radius:18px;overflow:hidden;opacity:0;pointer-events:none;background:#f7f6ec;transition:opacity .1s}
+.handset-front.visible{opacity:1;pointer-events:auto}.handset-display{height:100%;overflow:auto;scrollbar-width:thin;scrollbar-color:#c1ccb4 transparent;overscroll-behavior:contain}
+.handset-display[hidden]{display:none}.handset-camera{position:absolute;z-index:4;top:11px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#283d52 0 12%,#0c1115 30% 65%,#4c5050 70% 80%,#151919 90%);box-shadow:0 0 0 2px #e7e9df;pointer-events:none}
+.handset-glass{position:absolute;inset:0;border-radius:inherit;box-shadow:inset 1px 1px 1px #fff9,inset -1px -1px 2px #0002;pointer-events:none}
+.contact-page .handset-display .phone-screen{height:100%;min-height:610px;padding:0 18px;border:0;border-radius:0;background:#f7f6ec}
+.contact-page .handset-display .phone-status{height:36px;padding-top:1px;font-size:9px}.contact-page .handset-display .phone-status>span:first-child{font-size:7px;letter-spacing:0}
+.contact-page .handset-display .messenger-header{padding:8px 0 13px}.messenger-live{width:7px;height:7px;border-radius:50%;background:#708b54;box-shadow:0 0 0 4px #dce6d2}
+.contact-page .handset-display .identity-fields{padding-top:15px;gap:10px}.contact-page .handset-display .identity-fields input{font-size:16px;min-height:40px}
+.contact-page .handset-display .conversation-empty{min-height:90px;padding:12px 0}.contact-page .handset-display .composer textarea{min-height:65px;font-size:16px;resize:vertical}
+.contact-page .handset-display .composer-bottom button{width:44px;height:44px}.contact-page .handset-display .phone-shortcuts>a{min-height:48px}
+.handset-tools{display:flex;gap:5px;padding:5px;border:1px solid #d6dace;background:#eeeee4;border-radius:30px;max-width:100%}
+.handset-tools button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:44px;padding:0 13px;border-radius:25px;font-size:11px;color:#647156;white-space:nowrap}
+.handset-tools button[aria-pressed=true]{background:#fffdf5;color:#33492a;box-shadow:0 2px 5px #26391b12}.handset-tools button:disabled{opacity:.4;cursor:default}.handset-tools button:hover:not(:disabled){background:#e2e8d7}
+.handset-caption{font-size:10px;color:#8b947e;text-align:center;min-height:30px;line-height:1.8}
+.handset-sleep{height:100%;width:100%;display:flex;align-items:center;justify-content:center;gap:28px;flex-direction:column;background:radial-gradient(ellipse at 80% 10%,#62754f,#172219 80%);color:#e1e7d4}.handset-sleep>span{font-family:var(--mono);font-size:10px;letter-spacing:.06em}.handset-sleep strong{font-size:19px;font-weight:400}
+.handset-mobile-form{width:100%;background:#f7f6ec;border-radius:12px;border:1px solid var(--line);overflow:hidden}
+.handset-mobile-form .phone-screen{min-height:0;padding:20px 18px 8px;border:0;border-radius:0;background:transparent}
+.handset-mobile-form .phone-status{display:none}
+.handset-mobile-form .phone-shortcuts{border-top:1px solid var(--line);padding:12px 18px;justify-content:flex-start;gap:24px}
+.handset-mobile-form .home-indicator{display:none}
+@media(max-width:1100px) and (min-width:761px){.handset-viewer{height:690px}.handset-tools button{font-size:10px;padding:0 9px}}
+@media(max-width:760px){.handset-viewer{height:min(750px,198vw);max-width:430px}.handset-tools{gap:0}.handset-tools button{font-size:10px;padding:0 11px}.contact-page .handset-display .phone-screen{padding:0 16px}.contact-page .handset-display .identity-fields input{min-height:44px}.handset-caption{font-size:9px}}
+@media(max-width:380px){.handset-front{border-radius:14px}.handset-tools button{padding:0 8px;gap:4px}.contact-page .handset-display .phone-screen{padding:0 13px}}
+@media(prefers-reduced-motion:reduce){.handset-front,.handset-canvas{transition:none}}
+
+.contact-page .handset-display .phone-status{position:sticky;top:0;z-index:3;background:#f7f6ec}

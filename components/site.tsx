@@ -1,0 +1,21 @@
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
+import { ArrowUpRight, Volume2, VolumeX, Menu, X, Accessibility } from 'lucide-react';
+import { contact } from '@/lib/projects';
+
+const Preferences = createContext({ sound:false, reduced:false, toggleSound:()=>{}, toggleMotion:()=>{}, tick:()=>{} });
+export const usePreferences = () => useContext(Preferences);
+export function PreferencesProvider({children}:{children:React.ReactNode}) {
+  const [sound,setSound]=useState(false), [reduced,setReduced]=useState(false);
+  const audio=useRef<AudioContext|null>(null);
+  useEffect(()=>{const mq=matchMedia('(prefers-reduced-motion: reduce)'); const saved=localStorage.getItem('nomad-motion');setReduced(saved ? saved==='reduced':mq.matches);const cb=()=>{if(!localStorage.getItem('nomad-motion'))setReduced(mq.matches);};mq.addEventListener('change',cb);return()=>mq.removeEventListener('change',cb);},[]);
+  function tick(){if(!sound)return;try{const a=audio.current??new AudioContext();audio.current=a;void a.resume();const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(460,a.currentTime);o.frequency.exponentialRampToValueAtTime(220,a.currentTime+.055);g.gain.setValueAtTime(.025,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.085);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.09);}catch{}}
+  useEffect(()=>{document.documentElement.dataset.motion=reduced?'reduced':'full';},[reduced]);
+  return <Preferences.Provider value={{sound,reduced,toggleSound:()=>setSound(s=>!s),toggleMotion:()=>setReduced(v=>{localStorage.setItem('nomad-motion',!v?'reduced':'full');return !v;}),tick}}>{children}</Preferences.Provider>;
+}
+export function Mark({small=false}:{small?:boolean}){return <span className={'brand-mark'+(small?' small':'')} aria-hidden="true"><i/><i/><i/><i/></span>;}
+export function SiteHeader(){const path=usePathname();const [open,setOpen]=useState(false);const {sound,toggleSound}=usePreferences();useEffect(()=>setOpen(false),[path]);const nav=[['Work','/'],['About','/about'],['Journey','/journey'],['Blog','/blog'],['Contact','/contact']];return <header className="site-header"><Link href="/" className="brand" aria-label="Nomad Play home"><Mark/><span>NOMAD / PLAY</span></Link><span className="header-name">LEMAYAN LELEINA</span><div className="header-right"><nav aria-label="Main navigation" className={open?'main-nav open':'main-nav'}>{nav.map(([label,url])=><Link key={label} href={url} aria-current={(url==='/'?(path==='/'||path.startsWith('/projects')):path.startsWith(url))?'page':undefined}>{label}</Link>)}</nav><button className="sound-button icon-button" aria-label={sound?'Turn sound off':'Turn sound on'} onClick={toggleSound}>{sound?<Volume2 size={16}/>:<VolumeX size={16}/>}<span>Sound {sound?'on':'off'}</span></button><button className="mobile-menu icon-button" aria-label={open?'Close navigation':'Open navigation'} aria-expanded={open} onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div></header>;}
+export function SiteFooter(){const {reduced,toggleMotion}=usePreferences();return <footer className="site-footer"><span>© {new Date().getFullYear()} Lemayan Leleina</span><span className="footer-note">MADE WITH CURIOSITY, IN NAIROBI</span><div><button className="text-button" onClick={toggleMotion} aria-pressed={reduced}><Accessibility size={14}/><span>{reduced?'Reduced motion':'Motion on'}</span></button><a href={contact.resume} target="_blank" rel="noreferrer">Résumé <ArrowUpRight size={14}/></a><a href={contact.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a></div></footer>;}
+export function Breadcrumb({children}:{children:React.ReactNode}){return <div className="breadcrumb"><Link href="/">Home</Link><span>/</span>{children}</div>;}

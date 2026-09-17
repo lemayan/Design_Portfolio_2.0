@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {validateContact} from '../lib/contact-validation.ts';
+import {validRequestOrigin} from '../lib/request-origin.ts';
+const valid={name:'  Ada Lovelace  ',email:'ada@example.com',message:'I would love to discuss a project.',id:'12345678-1234-1234-1234-123456789abc',website:''};
+test('accepts a real message and trims input',()=>{const result=validateContact(valid);assert.equal(result.ok,true);if(result.ok)assert.equal(result.data.name,'Ada Lovelace');});
+test('rejects malformed and incomplete submissions',()=>{for(const input of [null,{},[],{...valid,name:' '},{...valid,email:'missing-at.example.com'},{...valid,email:'a@example.com\r\nBcc: b@example.com'},{...valid,message:'short'},{...valid,message:'x'.repeat(5001)},{...valid,id:'bad-id'}])assert.equal(validateContact(input).ok,false);});
+test('rejects a populated bot trap',()=>assert.equal(validateContact({...valid,website:'https://spam.test'}).ok,false));
+test('accepts unicode names and multiline messages',()=>assert.equal(validateContact({...valid,name:'Wanjikũ',message:'Hello Lemayan,\n\nLet’s discuss a new project.'}).ok,true));
+test('allows the actual request host and blocks another origin',()=>{assert.equal(validRequestOrigin('http://127.0.0.1:3001','127.0.0.1:3001'),true);assert.equal(validRequestOrigin('https://www.lemayanleleina.engineer','www.lemayanleleina.engineer'),true);assert.equal(validRequestOrigin('https://another-site.example','www.lemayanleleina.engineer'),false);assert.equal(validRequestOrigin('http://127.0.0.1:3000','127.0.0.1:3001'),false);assert.equal(validRequestOrigin('invalid','127.0.0.1:3001'),false);});

@@ -1,0 +1,4 @@
+'use client';
+import {useState,useEffect} from 'react';
+import {Copy,Check} from 'lucide-react';
+export default function ArticleTools(){const [progress,setProgress]=useState(0),[copied,setCopied]=useState(false);useEffect(()=>{const update=()=>{const total=document.documentElement.scrollHeight-innerHeight;setProgress(total>0?Math.min(100,scrollY/total*100):100);};update();addEventListener('scroll',update,{passive:true});addEventListener('resize',update);return()=>{removeEventListener('scroll',update);removeEventListener('resize',update);};},[]);return <><div className="reading-progress" style={{width:progress+'%'}} aria-hidden="true"/><button className="text-button" onClick={async()=>{try{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),2500);}catch{}}}>{copied?<Check size={16}/>:<Copy size={16}/>} {copied?'Link copied':'Copy article link'}</button></>;}
