@@ -29,7 +29,11 @@ All physical controls are also native HTML buttons with keyboard focus and label
 - Menu / M: return to the project menu.
 - Start / S: open the full project page.
 
-Mobile uses a scrolling cartridge shelf, larger control targets, and a centered console. Desktop fits the entire scene inside its own column, independently of the introduction and filters. Cartridge labels are textures on the meshes. Rendering pauses while idle; shadows use small baked textures rather than repeated blur passes. Project selection runs a 1.6-second ejection, lift, arcing flight, alignment, and insertion sequence. The new project appears only after insertion. Rapid selections queue the latest destination without interrupting a flight. Mobile carries the visible shelf sleeve across the canvas boundary before handing over to the 3D cartridge. List view and reduced motion are available.
+Mobile uses an immediately interactive dimensional CSS console with native controls and a cartridge shelf below it. It does not load the Three.js scene. One Web Animations timeline owns the complete 1.1-second cartridge flight, from shelf to slot; geometry is measured once and only transforms and opacity animate. There is no forced page scroll, frame-by-frame layout measurement, or handover to another renderer. Desktop retains the procedural WebGL console and 1.6-second cartridge flight, loading the scene only near the viewport. Reduced motion and list view remain available. Rapid selections finish the current flight, then load the latest selection.
+
+The transparent head logo is integrated directly into the navbar wordmark as the letter **O** in **NOMAD / PLAY** (`N[head]MAD / PLAY`), without jumping animations, featuring an optical baseline balance and subtle hover response. The image is a 9,872-byte WebP. See `docs/brand-asset.md` for the original edit prompt and source.
+
+Header blur and automatic navigation prefetching are disabled to avoid extra paint work and downloading unvisited routes. Fonts use local Latin subsets. Desktop cartridge label textures use 75% fewer pixels than the original 512 x 580 textures. The desktop contact handset loads near the viewport; the existing direct mobile contact form is preserved.
 
 ## Contact email
 
