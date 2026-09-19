@@ -5,3 +5,8 @@ node_modules/
 *.tsbuildinfo
 *.log
 .DS_Store
+/dist/
+.vinext/
+.wrangler/
+
+.dev.vars*
